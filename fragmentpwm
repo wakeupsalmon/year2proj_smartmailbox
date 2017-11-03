@@ -1,0 +1,39 @@
+#include <avr/io.h>
+
+unsigned int but=1200;
+
+void PMW (void)
+{
+	DDRD=(1<<5);
+	TCNT1= 0;
+	TCCR1A=0b10000000;
+	TCCR1B=0b00010010;
+	ICR1=18432;
+	OCR1A=but;
+}
+
+int main(void)
+{
+	char sw=1;
+	DDRC=0x00;
+	PMW();
+    while (1) 
+    {
+		if(PINC==1)
+		{
+		but=918;
+		if(sw==2)
+		PMW();
+		sw=1;
+		}
+		if(PINC==2)
+		{
+		but=1838;
+		if(sw==1)
+		PMW();
+		sw=2;
+		}
+		else
+		but=1600;
+    }
+}
